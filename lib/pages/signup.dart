@@ -1,4 +1,3 @@
-import 'package:authenticationapp/pages/Home.dart';
 import 'package:authenticationapp/pages/myprofile.dart';
 import 'package:authenticationapp/pages/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
