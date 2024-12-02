@@ -2,6 +2,16 @@ import 'package:authenticationapp/pages/signin.dart';
 import 'package:authenticationapp/pages/signup.dart';
 import 'package:authenticationapp/service/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+final GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: [
+    'email',
+    'profile',
+  ],
+  signInOption: SignInOption.standard,
+  forceCodeForRefreshToken: true, // Buộc chọn tài khoản mới khi đăng nhập.
+);
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,84 +27,142 @@ class _HomeState extends State<Home> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xFF9dc3d5),
-            Color(0xFF9ac3d4),
-            Color.fromARGB(145, 27, 94, 118)
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF9dc3d5),
+              Color(0xFF9ac3d4),
+              Color.fromARGB(145, 27, 94, 118),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("DUC'S PROFILE", style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),),
-            SizedBox(height: 120.0,),
-            Text("WELCOME TO MY APP", style: TextStyle(color: Colors.white, fontSize: 30.0, fontWeight: FontWeight.w500),),
-            SizedBox(height: 50.0,),
+            const Text(
+              "DUC'S PROFILE",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 50.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 120.0),
+            const Text(
+              "WELCOME TO MY APP",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 50.0),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> Signin()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Signin()),
+                );
               },
               child: Container(
-                padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                margin: EdgeInsets.only(left: 30.0, right: 30.0),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                margin: const EdgeInsets.symmetric(horizontal: 30.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     "SIGN IN",
-                    style: TextStyle(color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20.0,),
-
+            const SizedBox(height: 20.0),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> Signup()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Signup()),
+                );
               },
               child: Container(
-                  padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                  margin: EdgeInsets.only(left: 30.0, right: 30.0),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "SIGN UP",
-                      style: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.w500),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: const Center(
+                  child: Text(
+                    "SIGN UP",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
+              ),
             ),
-            SizedBox(height: 80.0,),
-            Text(
+            const SizedBox(height: 80.0),
+            const Text(
               "Login with social media",
-              style: TextStyle(color: Colors.white, fontSize: 20.0,),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
             ),
-            SizedBox(height: 20.0,),
+            const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: (){
-                    AutheMethods().SigninWithGoogle(context);
+                  onTap: () async {
+                    await _googleSignIn.signIn().then((user) {
+                      if (user != null) {
+                        AutheMethods().SigninWithGoogle(context);
+                      }
+                    }).catchError((error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Đăng nhập thất bại: $error')),
+                      );
+                    });
                   },
-                    child: Image.asset("images/img.png", width: 40.0, height: 40.0, fit: BoxFit.cover,)),
-                SizedBox(width: 20.0,),
-                Image.asset("images/img_1.png", width: 40.0, height: 40.0,fit: BoxFit.cover),
-                SizedBox(width: 20.0,),
-                Image.asset("images/img_2.png", width: 40.0, height: 40.0,fit: BoxFit.cover),
+                  child: Image.asset(
+                    "images/img.png",
+                    width: 40.0,
+                    height: 40.0,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 20.0),
+                Image.asset(
+                  "images/img_1.png",
+                  width: 40.0,
+                  height: 40.0,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(width: 20.0),
+                Image.asset(
+                  "images/img_2.png",
+                  width: 40.0,
+                  height: 40.0,
+                  fit: BoxFit.cover,
+                ),
               ],
             )
           ],
-        )
+        ),
       ),
     );
   }
