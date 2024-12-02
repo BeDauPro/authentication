@@ -3,10 +3,8 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
-    id "com.google.gms.google-services"
+    id "com.google.gms.google-services"  // Đảm bảo đã áp dụng plugin google-services
 }
-
-apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace = "com.example.authenticationapp"
@@ -30,7 +28,6 @@ android {
         versionName flutter.versionName
     }
 
-
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -41,10 +38,16 @@ android {
 }
 
 flutter {
-    source = "../.."
+    source = "../.."  // Đảm bảo đường dẫn đến source Flutter chính xác
 }
 
 dependencies {
+    // Firebase BOM giúp tự động quản lý phiên bản của các thư viện Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-analytics")  // Firebase Analytics
+    // Các thư viện Firebase khác nếu cần có thể thêm vào ở đây
+    // Ví dụ: Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
 }
+
+apply plugin: 'com.google.gms.google-services'  // Áp dụng plugin Google Services sau khi thêm dependencies

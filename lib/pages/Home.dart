@@ -1,5 +1,6 @@
 import 'package:authenticationapp/pages/signin.dart';
 import 'package:authenticationapp/pages/signup.dart';
+import 'package:authenticationapp/service/auth.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -81,7 +82,11 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("images/img.png", width: 40.0, height: 40.0, fit: BoxFit.cover,),
+                GestureDetector(
+                  onTap: (){
+                    AutheMethods().SigninWithGoogle(context);
+                  },
+                    child: Image.asset("images/img.png", width: 40.0, height: 40.0, fit: BoxFit.cover,)),
                 SizedBox(width: 20.0,),
                 Image.asset("images/img_1.png", width: 40.0, height: 40.0,fit: BoxFit.cover),
                 SizedBox(width: 20.0,),
