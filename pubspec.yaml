@@ -33,6 +33,7 @@ dependencies:
   firebase_auth:
   random_string:
   google_sign_in:
+  flutter_facebook_auth:
   flutter:
     sdk: flutter
 

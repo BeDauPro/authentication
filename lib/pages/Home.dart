@@ -1,8 +1,13 @@
+import 'dart:developer';
+import 'package:authenticationapp/pages/myprofile.dart';
 import 'package:authenticationapp/pages/signin.dart';
 import 'package:authenticationapp/pages/signup.dart';
 import 'package:authenticationapp/service/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 final GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: [
@@ -146,18 +151,54 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const SizedBox(width: 20.0),
-                Image.asset(
-                  "images/img_1.png",
-                  width: 40.0,
-                  height: 40.0,
-                  fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () async {
+                    try {
+
+                      final loginResult = await FacebookAuth.instance.login(permissions: ['email']);
+
+                      if (loginResult.status == LoginStatus.success) {
+
+                        final userData = await FacebookAuth.instance.getUserData();
+
+                        SignInMethods.signInWithFacebook(userData);
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Myprofile())
+                        );
+                      } else {
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Đăng nhập Facebook thất bại: ${loginResult.message}')),
+                        );
+                      }
+                    } catch (error) {
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Lỗi: $error')),
+                      );
+                    }
+                  },
+                  child: Image.asset(
+                    "images/img_1.png",
+                    width: 40.0,
+                    height: 40.0,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(width: 20.0),
-                Image.asset(
-                  "images/img_2.png",
-                  width: 40.0,
-                  height: 40.0,
-                  fit: BoxFit.cover,
+                GestureDetector(
+                  onTap:
+                  () async {
+
+                  },
+                  child: Image.asset(
+                    "images/img_2.png",
+                    width: 40.0,
+                    height: 40.0,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ],
             )
@@ -167,3 +208,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
+

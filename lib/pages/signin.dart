@@ -128,7 +128,7 @@ class _SigninState extends State<Signin> {
                           ),
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height/4,),
+                      SizedBox(height: MediaQuery.of(context).size.height/5,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

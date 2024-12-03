@@ -1,6 +1,7 @@
 import 'package:authenticationapp/pages/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -13,6 +14,8 @@ class Myprofile extends StatelessWidget {
       // Đăng xuất khỏi Firebase
       await FirebaseAuth.instance.signOut();
       await _googleSignIn.signOut();
+      await FacebookAuth.instance.logOut();
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Home()),
@@ -85,7 +88,7 @@ class Myprofile extends StatelessWidget {
                 ),
                 child: const Text(
                   'Đăng xuất',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
             ),

@@ -43,11 +43,16 @@ flutter {
 
 dependencies {
     // Firebase BOM giúp tự động quản lý phiên bản của các thư viện Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation("com.google.firebase:firebase-analytics")  // Firebase Analytics
-    // Các thư viện Firebase khác nếu cần có thể thêm vào ở đây
-    // Ví dụ: Firebase Authentication
-    implementation("com.google.firebase:firebase-auth")
+    implementation platform("com.google.firebase:firebase-bom:33.6.0")
+    implementation "com.google.firebase:firebase-analytics"  // Firebase Analytics
+    implementation "com.google.firebase:firebase-auth" // Firebase Authentication
+
+    // Facebook SDK cho đăng nhập Facebook
+    implementation "com.facebook.android:facebook-android-sdk:17.0.2"  // Cập nhật SDK Facebook phiên bản 17.0.2
+
+    // Facebook Login SDK - Thêm SDK Login Facebook chính thức
+    implementation "com.facebook.android:facebook-login:17.0.2"
 }
+
 
 apply plugin: 'com.google.gms.google-services'  // Áp dụng plugin Google Services sau khi thêm dependencies
